@@ -1,0 +1,21 @@
+# 운영체제
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 에디터와 Obsidian 개인 작업 상태
+.obsidian/workspace*.json
+.obsidian/cache
+.vscode/
+
+# 파이썬
+__pycache__/
+
+# Quartz 빌드 결과와 의존성 (2단계)
+node_modules/
+public/
+.quartz-cache/
+
+# 로컬 전용 (공개 저장소에 올리지 않음)
+AGENTS.md
+기록/
