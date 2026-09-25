@@ -39,6 +39,8 @@ jobs:
       - name: 사이트 빌드
         working-directory: quartz
         run: npx quartz build
+      - name: 사이트 링크 검사
+        run: python3 docs/tools/check_site_links.py quartz/public
       - uses: actions/upload-pages-artifact@v3
         with:
           path: quartz/public

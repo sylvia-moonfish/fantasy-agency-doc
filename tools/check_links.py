@@ -9,7 +9,8 @@ import sys
 import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SKIP_DIRS = {'.git', 'node_modules', 'public', '.quartz-cache'}
+# 기록/은 과거 시점의 경로를 그대로 담은 로컬 전용 기록이므로 검사하지 않는다.
+SKIP_DIRS = {'.git', 'node_modules', 'public', '.quartz-cache', '기록'}
 LINK_RE = re.compile(r'\]\(([^)\s]+)\)')
 HEADING_RE = re.compile(r'^#+\s+(.*)')
 

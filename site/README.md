@@ -34,6 +34,8 @@ npx quartz build --serve
 
 브라우저에서 `http://localhost:8080`을 연다. 문서를 고친 뒤에는 `prepare.mjs`를 다시 실행하면 반영된다.
 
+빌드된 사이트의 링크는 저장소 폴더에서 `python tools/check_site_links.py <Quartz 폴더>/public`으로 검사한다. 배포 워크플로도 배포 전에 같은 검사를 수행한다.
+
 ## 문서를 쓸 때 주의할 점
 
 - 문서 첫 줄의 `# 제목`은 사이트에서 페이지 제목이 되며 앵커가 사라진다. 다른 문서에서 문서 전체를 가리킬 때는 `문서.md#제목` 대신 `문서.md`로 링크한다. `python tools/check_links.py`가 이를 검사한다.
