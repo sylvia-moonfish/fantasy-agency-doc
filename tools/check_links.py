@@ -21,6 +21,13 @@ def slug(title):
     return title.replace(' ', '-')
 
 
+def title_anchor(path):
+    """문서 첫 줄의 "# 제목" 앵커. 위키 사이트에서는 이 제목이 앵커 없이 페이지 제목으로 바뀐다."""
+    with open(path, encoding='utf-8') as f:
+        m = re.match(r'# (.+)', f.readline())
+    return slug(m.group(1)) if m else None
+
+
 def anchors(path, cache={}):
     if path not in cache:
         with open(path, encoding='utf-8') as f:
@@ -53,6 +60,8 @@ def main():
                 broken.append(f'파일 없음: {rel} -> {target}')
             elif anchor and os.path.isfile(dest) and anchor not in anchors(dest):
                 broken.append(f'앵커 없음: {rel} -> {target}')
+            elif anchor and os.path.isfile(dest) and anchor == title_anchor(dest):
+                broken.append(f'문서 제목 앵커(위키에서 깨짐, 앵커 없이 문서만 링크할 것): {rel} -> {target}')
     for line in broken:
         print(line)
     print(f'검사한 문서 {len(files)}개, 깨진 링크 {len(broken)}개')

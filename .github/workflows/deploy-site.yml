@@ -1,0 +1,54 @@
+name: 위키 사이트 배포
+
+# main 브랜치에 올릴 때마다 Quartz로 위키 사이트를 빌드해 GitHub Pages에 배포한다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # 검증한 Quartz 버전. 올릴 때는 로컬에서 먼저 빌드를 확인한다.
+  QUARTZ_VERSION: v4.5.2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: docs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Quartz 내려받기
+        run: git clone --depth 1 --branch "$QUARTZ_VERSION" https://github.com/jackyzha0/quartz.git quartz
+      - name: Quartz 의존성 설치
+        working-directory: quartz
+        run: npm ci
+      - name: 문서 준비
+        run: node docs/site/prepare.mjs quartz
+      - name: 사이트 빌드
+        working-directory: quartz
+        run: npx quartz build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: quartz/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
