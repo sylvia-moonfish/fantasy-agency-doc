@@ -6,7 +6,7 @@
 | --- | --- |
 | `quartz.config.ts` | 사이트 제목, 주소, 언어, 글꼴, 플러그인 설정 |
 | `quartz.layout.ts` | 페이지 구성 요소(탐색기, 검색, 그래프, 역링크 등) 배치 |
-| `prepare.mjs` | 문서를 Quartz의 `content/`로 복사하고, 제목을 앞머리로 옮기고, 폴더별 태그를 단다 |
+| `prepare.mjs` | 문서와 문서에 넣은 이미지(png·jpg·webp·gif·svg)를 Quartz의 `content/`로 복사하고, 제목을 앞머리로 옮기고, 폴더별 태그를 단다 |
 
 ## 자동 배포
 

@@ -3,7 +3,7 @@
 // 사용법: node site/prepare.mjs <Quartz 폴더 경로>
 //
 // 1. 저장소의 Quartz 설정(site/quartz.config.ts, site/quartz.layout.ts)을 Quartz 폴더에 복사한다.
-// 2. Quartz 폴더의 content/를 비우고 공개할 Markdown 문서를 복사한다.
+// 2. Quartz 폴더의 content/를 비우고 공개할 Markdown 문서와 문서에 넣은 이미지를 복사한다.
 // 3. 각 문서의 첫 줄 제목(# 제목)을 앞머리의 title로 옮긴다. 사이트에서 제목이 두 번 보이지 않게 하기 위함이다.
 //    이때 폴더에 따라 분류 태그(확정·미확정 등)를 단다.
 // 4. 사이트 첫 페이지(index.md)를 목차.md로 만든다.
@@ -38,6 +38,9 @@ for (const name of ["quartz.config.ts", "quartz.layout.ts"]) {
 const contentDir = path.join(quartzDir, "content")
 fs.rmSync(contentDir, { recursive: true, force: true })
 fs.mkdirSync(contentDir, { recursive: true })
+
+// 문서에 넣는 이미지. Markdown 문서와 함께 복사한다.
+const IMAGE_EXT = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"])
 
 // 최상위 폴더(또는 파일)별 태그. 새 폴더를 만들면 여기에도 추가한다.
 const TAGS = {
@@ -74,6 +77,8 @@ function copyMarkdown(srcDir, destDir) {
     } else if (entry.name.endsWith(".md")) {
       const relPath = path.relative(repoRoot, src)
       fs.writeFileSync(dest, toSitePage(fs.readFileSync(src, "utf8"), relPath))
+    } else if (IMAGE_EXT.has(path.extname(entry.name).toLowerCase())) {
+      fs.copyFileSync(src, dest)
     }
   }
 }
